@@ -1,78 +1,50 @@
 let num = 1;
-let correct = true;
+let max;
 
-/*
-* Method that calls the correct function upon the click of the button.
- */
-function buttonClicked() {
-    let instruction = document.getElementById("instruction");
-    let message = document.getElementById("message");
+let isValid = false;
+let instruction = document.getElementById("instruction");
 
-    if(instruction.innerText === "Enter a positive number." &&
-        (message.innerText === "You got it!" || message.innerText === "")) {
-        setMaxNum();
-    }
-    else {
-        doGuess();
-    }
-}
-
-/*
-* Method that sets the maximum number for the program.
- */
-function setMaxNum() {
-    let max = Number(document.getElementById("guess").value);
-
-    let instruction = document.getElementById("instruction");
-    let message = document.getElementById("message");
+while (!isValid) {
+    max = window.prompt("Enter the maximum number.")
 
     if(!isNaN(max) && max > 0) {
-        let num = Math.floor(Math.random() * Math.round(max)) + 1;
-        console.log(num);
+        max = Math.round(max);
+        num = Math.floor(Math.random() * max) + 1;
         instruction.innerHTML = "Guess a number between 1 and " + max;
-    }
-    else if(isNaN(max)) {
-        message.innerHTML = "That is not a number!";
-    }
-    else {
-        message.innerHTML = "That number is not in range, try again.";
+        console.log(num);
+        isValid = true;
     }
 }
 
-/*
-* Method that checks the user's guess is a valid input.
- */
-function doGuess() {
-    let guess = Number(document.getElementById("guess").value);
+console.log(num);
 
+function do_guess() {
+    let guess = Number(document.getElementById("guess").value);
     let message = document.getElementById("message");
 
-    if(!isNaN(guess) && guess > 0 && guess < num+1) {
-        checkGuess(guess);
-    }
-    else if(isNaN(guess)) {
-        message.innerHTML = "That is not a number!";
-    }
-    else {
-        message.innerHTML = "That number is not in range, try again.";
-    }
+        let array = [];
 
+        if (guess > 0 && guess < max + 1 && Number.isFinite(guess)) {
+            if (guess === num) {
+                array.push(guess);
+                message.innerHTML = "You got it! It took you " + array.length
+                    + " times and your guesses were " + array.toString();
+            } else if (guess > num) {
+                array.push(guess);
+                message.innerHTML = "No, try a lower number.";
+            } else if (guess < num) {
+                array.push(guess);
+                message.innerHTML = "No, try a higher number.";
+            }
+        } else {
+            if (!Number.isFinite(guess)) {
+                message.innerHTML = "That is not a number!";
+            } else {
+                message.innerHTML = "That number is not in range, try again.";
+            }
+        }
 }
 
 /*
 * Method that checks if the user guessed correctly.
  */
-function checkGuess(guess) {
-    let message = document.getElementById("message");
-    let instruction = document.getElementById("instruction");
-    if(guess === num) {
-        message.innerHTML = "You got it!";
-        instruction.innerHTML = "Enter a positive number.";
-    }
-    else if(guess > num ) {
-        message.innerHTML = "No, try a lower number.";
-    }
-    else {
-        message.innerHTML = "No, try a higher number.";
-    }
-}
