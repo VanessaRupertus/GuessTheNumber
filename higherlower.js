@@ -1,4 +1,5 @@
 let num = 1;
+let array = [];
 let max;
 
 let isValid = false;
@@ -22,19 +23,20 @@ function do_guess() {
     let guess = Number(document.getElementById("guess").value);
     let message = document.getElementById("message");
 
-        let array = [];
-
         if (guess > 0 && guess < max + 1 && Number.isFinite(guess)) {
             if (guess === num) {
                 array.push(guess);
                 message.innerHTML = "You got it! It took you " + array.length
                     + " times and your guesses were " + array.toString();
-            } else if (guess > num) {
+            } else if (guess > num && !array.includes(guess)) {
                 array.push(guess);
                 message.innerHTML = "No, try a lower number.";
-            } else if (guess < num) {
+            } else if (guess < num && !array.includes(guess)) {
                 array.push(guess);
                 message.innerHTML = "No, try a higher number.";
+            }
+            else {
+                message.innerHTML = "You've already guessed that number!";
             }
         } else {
             if (!Number.isFinite(guess)) {
@@ -44,7 +46,3 @@ function do_guess() {
             }
         }
 }
-
-/*
-* Method that checks if the user guessed correctly.
- */
